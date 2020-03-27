@@ -1,0 +1,14 @@
+C:\Users\Surface\source\repos\Better_Choices_1\Better_Choices_1\Better_Choices_1\bin\Debug\netstandard2.0\Better_Choices_1.deps.json
+C:\Users\Surface\source\repos\Better_Choices_1\Better_Choices_1\Better_Choices_1\bin\Debug\netstandard2.0\Better_Choices_1.dll
+C:\Users\Surface\source\repos\Better_Choices_1\Better_Choices_1\Better_Choices_1\bin\Debug\netstandard2.0\ref\Better_Choices_1.dll
+C:\Users\Surface\source\repos\Better_Choices_1\Better_Choices_1\Better_Choices_1\bin\Debug\netstandard2.0\Better_Choices_1.pdb
+C:\Users\Surface\source\repos\Better_Choices_1\Better_Choices_1\Better_Choices_1\obj\Debug\netstandard2.0\Better_Choices_1.csprojAssemblyReference.cache
+C:\Users\Surface\source\repos\Better_Choices_1\Better_Choices_1\Better_Choices_1\obj\Debug\netstandard2.0\App.xaml.g.cs
+C:\Users\Surface\source\repos\Better_Choices_1\Better_Choices_1\Better_Choices_1\obj\Debug\netstandard2.0\MainPage.xaml.g.cs
+C:\Users\Surface\source\repos\Better_Choices_1\Better_Choices_1\Better_Choices_1\obj\Debug\netstandard2.0\Better_Choices_1.csproj.CoreCompileInputs.cache
+C:\Users\Surface\source\repos\Better_Choices_1\Better_Choices_1\Better_Choices_1\obj\Debug\netstandard2.0\Better_Choices_1.AssemblyInfoInputs.cache
+C:\Users\Surface\source\repos\Better_Choices_1\Better_Choices_1\Better_Choices_1\obj\Debug\netstandard2.0\Better_Choices_1.AssemblyInfo.cs
+C:\Users\Surface\source\repos\Better_Choices_1\Better_Choices_1\Better_Choices_1\obj\Debug\netstandard2.0\XamlC.stamp
+C:\Users\Surface\source\repos\Better_Choices_1\Better_Choices_1\Better_Choices_1\obj\Debug\netstandard2.0\Better_Choices_1.dll
+C:\Users\Surface\source\repos\Better_Choices_1\Better_Choices_1\Better_Choices_1\obj\Debug\netstandard2.0\ref\Better_Choices_1.dll
+C:\Users\Surface\source\repos\Better_Choices_1\Better_Choices_1\Better_Choices_1\obj\Debug\netstandard2.0\Better_Choices_1.pdb

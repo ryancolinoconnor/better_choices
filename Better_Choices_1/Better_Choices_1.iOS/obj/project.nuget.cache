@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "fXosIIoJXmOuW7UJVa0VvE8Bx3cA2StmOkQ11E/vZ79m5HDWdadJzCnWEAzDcuUyEBLMYMXs3f1QPKirn69lDw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Surface\\source\\repos\\Better_Choices_1\\Better_Choices_1\\Better_Choices_1.iOS\\Better_Choices_1.iOS.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Surface\\.nuget\\packages\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512",
+    "C:\\Microsoft\\Xamarin\\NuGet\\xamarin.essentials\\1.3.1\\xamarin.essentials.1.3.1.nupkg.sha512",
+    "C:\\Microsoft\\Xamarin\\NuGet\\xamarin.forms\\4.4.0.991265\\xamarin.forms.4.4.0.991265.nupkg.sha512"
+  ],
+  "logs": []
+}

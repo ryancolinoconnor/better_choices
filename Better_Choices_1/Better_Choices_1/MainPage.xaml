@@ -6,7 +6,7 @@
              mc:Ignorable="d"
              x:Class="Better_Choices_1.MainPage">
 
-    <StackLayout>
+    <StackLayout Margin="20,35,20,20">
         <!-- Place new controls here -->
         <Label Text="Welcome to Xamarin.Forms!" 
            HorizontalOptions="Center"
@@ -17,6 +17,21 @@
                 HeightRequest="200"
                 TextChanged="OnEditorTextChanged"
                 Completed="OnEditorCompleted" />
+
+        <Entry x:Name="nameEntry"
+               Placeholder="Enter name" />
+        <Entry x:Name="ageEntry"
+               Placeholder="Enter age" />
+        <Button Text="Add to Database"
+                Clicked="OnButtonClicked" />
+        <ListView x:Name="listView">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding Name}"
+                              Detail="{Binding Age}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </StackLayout>
 
 </ContentPage>

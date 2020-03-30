@@ -17,22 +17,8 @@ namespace Better_Choices_1
         {
             InitializeComponent();
         }
-        int count = 0;
-        void Button_Clicked(object sender, System.EventArgs e)
-        {
-            count++;
-            ((Button)sender).Text = $"You clicked {count} times.";
-        }
-        void OnEditorTextChanged(object sender, TextChangedEventArgs e)
-        {
-            string oldText = e.OldTextValue;
-            string newText = e.NewTextValue;
-        }
 
-        void OnEditorCompleted(object sender, EventArgs e)
-        {
-            string text = ((Editor)sender).Text;
-        }
+
         protected override async void OnAppearing()
         {
             base.OnAppearing();
@@ -41,15 +27,19 @@ namespace Better_Choices_1
 
         async void OnButtonClicked(object sender, EventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(nameEntry.Text) && !string.IsNullOrWhiteSpace(ageEntry.Text))
+            if (!string.IsNullOrWhiteSpace(nameEntry.Text))
             {
-                await App.Database.SavePersonAsync(new Person
+                await App.Database.SavePersonAsync(new Habit
                 {
                     Name = nameEntry.Text,
-                    Age = int.Parse(ageEntry.Text)
+                    Type = typePicker.Items[typePicker.SelectedIndex],
+                    date_started = dateEntry.Date,
+                    money_saved = Convert.ToDouble(moneySaved.Text),
+
+                    
                 });
 
-                nameEntry.Text = ageEntry.Text = string.Empty;
+                nameEntry.Text  = string.Empty;
                 listView.ItemsSource = await App.Database.GetPeopleAsync();
             }
         }

@@ -12,17 +12,17 @@ namespace Better_Choices_1
         public Database(string dbPath)
         {
             _database = new SQLiteAsyncConnection(dbPath);
-            _database.CreateTableAsync<Person>().Wait();
+            _database.CreateTableAsync<Habit>().Wait();
         }
 
-        public Task<List<Person>> GetPeopleAsync()
+        public Task<List<Habit>> GetPeopleAsync()
         {
-            return _database.Table<Person>().ToListAsync();
+            return _database.Table<Habit>().ToListAsync();
         }
 
-        public Task<int> SavePersonAsync(Person person)
+        public Task<int> SavePersonAsync(Habit habit)
         {
-            return _database.InsertAsync(person);
+            return _database.InsertAsync(habit);
         }
     }
 }

@@ -51,12 +51,34 @@
         <ListView x:Name="listView">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Text="{Binding Name}"
-                              Detail="{Binding date_started}" />
+                    <ViewCell>
+                        <ViewCell.ContextActions>
+                            <MenuItem Clicked="OnMore"
+                                CommandParameter="{Binding .}"
+                                Text="More" />
+                            <MenuItem Clicked="OnDelete"
+                                CommandParameter="{Binding .}"
+                                Text="Delete" IsDestructive="True" />
+                        </ViewCell.ContextActions>
+                        <StackLayout Padding="15,0">
+                            <Label Text="{Binding Name}" />
+                        </StackLayout>
+                    </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-
+        <StackLayout Orientation="Horizontal"  HorizontalOptions="FillAndExpand">
+            <StackLayout Orientation="Vertical"  HorizontalOptions="FillAndExpand">
+                <Button Text="Delete"
+                Clicked="DeleteRecord" />
+            </StackLayout>
+            <StackLayout Orientation="Vertical"  HorizontalOptions="FillAndExpand">
+                <Button Text="Modify"
+                Clicked="OnButtonClicked" />
+            </StackLayout>
+        </StackLayout>
+        <Label Text="ID"
+               x:Name="id_display"/>
     </StackLayout>
 
 </ContentPage>

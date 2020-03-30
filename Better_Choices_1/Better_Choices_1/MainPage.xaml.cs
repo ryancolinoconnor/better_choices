@@ -43,5 +43,27 @@ namespace Better_Choices_1
                 listView.ItemsSource = await App.Database.GetPeopleAsync();
             }
         }
+        public void OnMore(object sender, EventArgs e)
+        {
+            var mi = ((MenuItem)sender);
+            DisplayAlert("More Context Action", mi.CommandParameter + " more context action", "OK");
+        }
+
+        public void OnDelete(object sender, EventArgs e)
+        {
+            var mi = ((MenuItem)sender);
+            DisplayAlert("Delete Context Action", mi.CommandParameter + " delete context action", "OK");
+        }
+
+        async void DeleteRecord(object sender, EventArgs e)
+        {
+            // await App.Database.DeleteHabitAsync(
+            //     Convert.ToInt32(listView.SelectedItem.ToString()));
+            // listView.ItemsSource = await App.Database.GetPeopleAsync();
+            /// int id =  App.Database.SearchAsync(listView.SelectedItem.ToString());
+            
+            //id_display.Text = new Habit(listView.SelectedItem).ID;
+
+        }
     }
 }

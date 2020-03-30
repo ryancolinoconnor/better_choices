@@ -24,5 +24,14 @@ namespace Better_Choices_1
         {
             return _database.InsertAsync(habit);
         }
+        public Task<int> DeleteHabitAsync(int habit_it)
+        {
+            return _database.DeleteAsync(habit_it);
+        }
+        public int SearchAsync(string habit_name)
+        {
+            string sql = "SELECT ID FROM HABIT WHERE NAME ='{habit_name}'";
+            return _database.QueryAsync<Habit>(sql).Result.ToArray()[0].ID;
+        }
     }
 }

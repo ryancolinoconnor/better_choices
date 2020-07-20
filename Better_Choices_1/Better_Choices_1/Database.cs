@@ -8,6 +8,8 @@ using Better_Choices_1.Analytics;
 
 namespace Better_Choices_1
 {
+
+
     public class Database
     {
         readonly SQLiteAsyncConnection _database;

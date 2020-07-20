@@ -53,20 +53,37 @@
                     <DataTemplate>
                         <ViewCell>
 
-                            <StackLayout Orientation="Horizontal">
+                            <StackLayout Orientation="Horizontal"
+                                        VerticalOptions="Start">
                                 <StackLayout Orientation="Vertical">
                                     
                                     <Label Text="{Binding Name}" 
-                                            TextColor="Black"/>
-                                    <Label Text="{Binding stash_name_to_use}" />
+                                            TextColor="Black"
+                                           FontSize="9"
+                                           Padding="0"/>
+                                    <StackLayout Orientation="Horizontal"
+                                                 Padding="0"
+                                                 VerticalOptions="Start">
+                                        <Label Text="{Binding date_str}"
+                                       FontSize="6"
+                                          Padding="0"/>
+                                        <Label Text="{Binding stash_name_to_use}"
+                                               FontSize="6"
+                                               Padding="0"
+                                           TextColor="Gray"/>
                                     </StackLayout>
-                                <Label Text="{Binding money_saved}"
-                                                TextColor="#77d065"/>
-                                <Label Text="{Binding date_str}"/>
+                                </StackLayout>
+
+                                <Label Text="{Binding money_saved, StringFormat='{0:C}'}"
+                                                TextColor="#77d065"
+                                       HorizontalOptions="EndAndExpand"/>
+
                                 <Button Text="Remove"
                                             Clicked="DeleteRecord"
-                                            TextColor="Red"
-                                            HorizontalOptions="EndAndExpand"
+                                            TextColor="PaleVioletRed"
+                                            FontSize="6"
+                                            HorizontalOptions="End"
+                                            VerticalOptions="Fill"
                                             BorderColor="Transparent"
                                             BackgroundColor="Transparent"/>
                             </StackLayout>

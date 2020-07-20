@@ -146,7 +146,7 @@ namespace Better_Choices_1
         public async void refresh()
         {
             jobs_view.ItemsSource = App.Database.GetNamedJobsAsync();
-            Aggregation.Text = "$" + Convert.ToString(App.Database.money_saved()) + " saved ";
+            Aggregation.Text = "$" + Convert.ToString(Math.Round(App.Database.money_saved(),2)) + " saved ";
             data_entry.refresh();
             //data_entry = new DataSubmissions.Base_Data_Entry();
             //Example1.Content = data_entry.Content;

@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<views:DataSubmissionForm xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:views="clr-namespace:Better_Choices_1.TemplateForms;assembly=Better_Choices_1"
+             mc:Ignorable="d"
+             x:Class="Better_Choices_1.Money_Stashes.Base_Data_Entry">
+  <ContentView.Content>
+      <StackLayout>
+            <Label Text="New Stash" 
+                       x:Name="Aggregation"
+                HorizontalTextAlignment="Center"
+                   FontSize="30"
+            />
+            <Entry x:Name="nameEntry"
+                        Placeholder="Goal Title" />
+          
+            <StackLayout Orientation="Horizontal" 
+                            HorizontalOptions="EndAndExpand">
+                <Label Text="Start Date:"
+                       VerticalOptions="Center"
+                       HorizontalOptions="StartAndExpand"/>
+                <DatePicker x:Name="end_dateEntry"
+                            VerticalOptions="Center"/>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" 
+                            HorizontalOptions="EndAndExpand">
+                <Label Text="Target Date:"
+                       HorizontalOptions="StartAndExpand"
+                       VerticalOptions="Center"/>
+                <DatePicker x:Name="dateEntry"
+                            VerticalOptions="Center"/>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal"  HorizontalOptions="FillAndExpand">
+                <StackLayout Orientation="Vertical"  HorizontalOptions="FillAndExpand">
+                    <Entry x:Name="target_savings"
+                   Placeholder="Target Savings"
+                   Keyboard="Numeric"/>
+                </StackLayout>
+                
+            </StackLayout>
+            <StackLayout x:Name="combobox_holder"
+                         Orientation="Horizontal"/>
+
+        </StackLayout>
+      
+    </ContentView.Content>
+</views:DataSubmissionForm>

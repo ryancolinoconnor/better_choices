@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<views:ChildForm xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:views="clr-namespace:Better_Choices_1.DataSubmissions;assembly=Better_Choices_1"
+             mc:Ignorable="d"
+             x:Class="Better_Choices_1.DataSubmissions.Recurring_View">
+    <ContentView.Content>
+        <StackLayout x:Name="Common_Holder">
+            <StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <ContentView x:Name="Frequency_Selector"/>
+                </StackLayout>
+
+            </StackLayout>
+        </StackLayout>
+    </ContentView.Content>
+</views:ChildForm>

@@ -1,0 +1,282 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Syncfusion.XForms.Buttons;
+using Syncfusion.XForms.ComboBox;
+using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
+
+using Rg.Plugins.Popup.Pages;
+using Rg.Plugins.Popup.Extensions;
+
+namespace Better_Choices_1.DataSubmissions
+{
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class Base_Data_Entry : ContentView
+    {
+        ChildForm child_form;
+
+
+        StackLayout all_content;
+        Entry nameEntry;
+        StackLayout radiogrouplayout;
+        Home parent_;
+        public Base_Data_Entry(string stash_id, Home parent)
+        {
+            InitializeComponent();
+            this.set_stash(stash_id);
+            parent_ = parent;
+            //ChildForm child_form = new ChildForm();
+            // OnAppearing();
+            // radiogroupLayout = new StackLayout();
+            all_content = new StackLayout();
+            Base_Stack.Children.Insert(1, all_content);
+            
+            child_form = new One_Time();
+            Variable_Content.Content = child_form.Content;
+            SfRadioGroupKey radioGroup = new SfRadioGroupKey();
+            SfRadioButton one_time = new SfRadioButton();
+            one_time.IsChecked = true;
+            one_time.Text = "One Time";
+            nameEntry = new Entry();
+            nameEntry.Placeholder = "I made the decision to";
+            radiogrouplayout = new StackLayout();
+            radiogrouplayout.Orientation = Xamarin.Forms.StackOrientation.Horizontal;
+            radiogroupLayout.HorizontalOptions = Xamarin.Forms.LayoutOptions.FillAndExpand;
+            all_content.Children.Insert(0,nameEntry);
+            all_content.Children.Insert(1, radiogroupLayout);
+
+
+            SfRadioButton recurring = new SfRadioButton();
+            recurring.Text = "Recurring";
+            SfRadioButton bulk = new SfRadioButton();
+            bulk.Text = "Bulk Purchase";
+
+            one_time.GroupKey = radioGroup;
+            recurring.GroupKey = radioGroup;
+            bulk.GroupKey = radioGroup;
+            bulk.HorizontalOptions = Xamarin.Forms.LayoutOptions.FillAndExpand;
+            radiogroupLayout.HorizontalOptions = Xamarin.Forms.LayoutOptions.FillAndExpand;
+            radiogroupLayout.Children.Add(one_time);
+            radiogroupLayout.Children.Add(recurring);
+            radiogroupLayout.Children.Add(bulk);
+            radiogroupLayout.HorizontalOptions = Xamarin.Forms.LayoutOptions.FillAndExpand;
+            one_time.StateChanged += RadioButton_StateChanged;
+            recurring.StateChanged += RadioButton_StateChanged;
+            bulk.StateChanged += RadioButton_StateChanged;
+            nameEntry.Text = string.Empty;
+            typePicker.IsVisible = false;
+
+
+
+
+
+
+
+
+            moneySaved.TextChanged += let_refresh;
+            nameEntry.TextChanged += let_refresh;
+            this.set_helper();
+
+
+            //Add_stash.Clicked += btnPopupButton_Clicked;
+            //child_form.refresh();
+        }
+        public void let_refresh(object sender, EventArgs e)
+        {
+            this.downstream_refresh();
+        }
+
+        public void visible_(bool visible)
+        {
+            Variable_Content.IsVisible = visible;
+            all_content.IsVisible = visible;//Xamarin.Forms.Binding.
+            moneySaved.IsVisible = visible;
+            moneySaved2.IsVisible = visible;
+            buttonholder.IsVisible = visible;
+            this.set_helper();
+        }
+        async void OnButtonClicked(object sender, EventArgs e)
+        {
+
+            Habit Habit_ = this.GetHabit();
+            int job_id = await App.Database.SaveItemAsync(Habit_);
+            this.save_Habit_Data(Habit_);
+
+            parent_.refresh();
+            this.refresh();
+
+
+
+        }
+        void Clear_OnButtonClicked(object sender, EventArgs e)
+        {
+            parent_.refresh();
+            this.refresh();
+        
+
+
+        }
+        string stash_id;
+        public void set_stash(string stash)
+        {
+            stash_id = stash;
+        }
+
+        public bool form_complete()
+        {
+            return true;
+        }
+        public Habit GetHabit()
+        {
+            double money_saved_2 = 0.0;
+            double.TryParse(moneySaved.Text, out money_saved_2);
+            double money_saved_1 = 0.0;
+            double.TryParse(moneySaved2.Text, out money_saved_1);
+
+            double how_common_1 = child_form.how_common_1();
+            double how_common_2 = child_form.how_common_2();
+
+            string frequency_1 = child_form.frequency_1();
+            string frequency_2 = child_form.frequency_2();
+            double savings = new utils_data.FrequencyTranslator().get_savings(
+            money_saved_1, frequency_1, how_common_1,
+            money_saved_2, frequency_2, how_common_2
+            );
+            DateTime date_ended = child_form.end_date();
+            var Habit_ = new Habit
+            {
+                Name = nameEntry.Text,
+                date_started = child_form.get_start_date(),
+                money_saved = savings,
+                date_ended = child_form.get_end_date(),
+                how_common = child_form.how_common_1(),
+                frequency = child_form.frequency_1(),
+
+            };
+            Habit_.stash_to_use = App.Database.GetStashesID(stash_id);
+            return Habit_;
+            
+            
+        }
+        public void set_helper()
+        {
+            double money_saved_2 = 0.0;
+            double.TryParse(moneySaved.Text, out money_saved_2);
+            double money_saved_1 = 0.0;
+            double.TryParse(moneySaved2.Text, out money_saved_1);
+
+            double how_common_1 = child_form.how_common_1();
+            double how_common_2 = child_form.how_common_2();
+
+            string str1 = child_form.frequency_1();
+            string str2 = child_form.frequency_2();
+            if (str1 == "One Time")
+            {
+                Calculator.IsVisible = false;
+                return;
+            }
+            Calculator.IsVisible = true;
+            if (str2 == "Default")
+            {
+                str2 = str1;
+
+            }
+            if (str1 != "Default")
+            {
+                Better_Choices_1.utils_data.FrequencyTranslator freq = new utils_data.FrequencyTranslator();
+                string helper_str = freq.helper_string(
+                    money_saved_1, str1, how_common_1,
+                    money_saved_2, str2, how_common_2
+                    );
+                Calculator.Text = helper_str;
+                
+            }
+            else
+            {
+                Calculator.Text = "Periodic Savings will be calculated with more data";
+            }
+
+        }
+        public async void save_Habit_Data(Habit Habit_)
+        {
+            int i = 0;
+            DateTime occurence_date = Habit_.date_started;
+
+            while (occurence_date <= Habit_.date_ended)
+            {
+                var Habit_Data_ = new Habit_Data
+                {
+                    //Job = Habit_,
+                    Job_ID = Habit_.ID,
+                    date_run = occurence_date,
+                    money_saved = Habit_.money_saved,
+                    money_stored = Habit_.money_saved,
+                    stash_to_use = Habit_.stash_to_use
+
+                };
+                await App.Database.SaveItemAsync(Habit_Data_);
+                occurence_date = new utils_data.FrequencyTranslator().AddDate(Habit_, occurence_date);
+            }
+
+            //return Habit_Data_;
+        }
+        public void downstream_refresh()
+        {
+            this.set_helper();
+        }
+        public void refresh()
+        {
+            nameEntry.Text = null;
+
+            moneySaved.Text = null;
+            moneySaved2.Text = null;
+            child_form.refresh();
+            
+
+        }
+        async void Create_Stash(object sender, EventArgs e)
+        {
+
+
+            await Navigation.PushPopupAsync(new TemplateForms.MyPopupPage(new Money_Stashes.Base_Data_Entry()));
+            parent_.refresh();
+            //await PopupNavigation.PushAsync();
+            //await PopupNavigation.PushAsync(new PopUp());
+            //string stash_name = await App.Current.MainPage.DisplayPromptAsync("Stash Creator", "Please Enter a Name");
+            //Stash stash = new Stash { Name = stash_name };
+            //App.Database.SaveStashAsync(stash);
+            //this.refresh();
+        }
+
+        private void RadioButton_StateChanged(object sender, StateChangedEventArgs e)
+        {
+            if (e.IsChecked.HasValue && e.IsChecked.Value)
+            {
+                if ((sender as SfRadioButton).Text == "One Time")
+                {
+                    child_form = new One_Time();
+                    Variable_Content.Content = child_form.Content;
+                }
+                 if ((sender as SfRadioButton).Text == "Recurring")
+                {
+                    child_form = new Recurring_View();
+                    Variable_Content.Content = child_form.Content;
+                }
+                if ((sender as SfRadioButton).Text == "Bulk Purchase")
+                {
+                    child_form = new Bulk_Purchase();
+                    Variable_Content.Content = child_form.Content;
+                }
+                this.set_helper();
+            }
+        }
+
+        private void moneySaved_TextChanged(object sender, TextChangedEventArgs e)
+        {
+           this.set_helper();
+        }
+    }
+}

@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:syncfusion="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms" 
+             xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             x:Name="home"
+             x:Class="Better_Choices_1.Home">
+    <ContentPage.Content>
+        <StackLayout Margin="20,35,20,20"
+                     x:Name="main_form"
+                      VerticalOptions="EndAndExpand"       >
+            <!-- Place new controls here -->
+
+            <Grid x:Name="MainGrid"
+                   ColumnSpacing="0"
+                  VerticalOptions="EndAndExpand">
+                <Grid.RowDefinitions
+                    >
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="300" />
+                    <ColumnDefinition Width="15" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+            <Label Text="Hello World" 
+
+                       x:Name="Aggregation"
+                   Grid.Row="0" Grid.Column="1"
+                   Grid.ColumnSpan="2"
+
+                   FontSize="20"
+                   TextColor="#77d065"/>
+
+            </Grid>
+            <ContentView x:Name="Example1">
+                
+            </ContentView>
+
+            
+            <Label Text="Recent Savings" 
+                HorizontalTextAlignment="Start"
+                   VerticalTextAlignment="Center"
+                   FontSize="20"
+                   BackgroundColor="LightBlue"
+                   TextColor="White"/>
+
+            <ListView x:Name="jobs_view">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+
+                            <StackLayout Orientation="Horizontal">
+                                <StackLayout Orientation="Vertical">
+                                    
+                                    <Label Text="{Binding Name}" 
+                                            TextColor="Black"/>
+                                    <Label Text="{Binding stash_name_to_use}" />
+                                    </StackLayout>
+                                <Label Text="{Binding money_saved}"
+                                                TextColor="#77d065"/>
+                                <Label Text="{Binding date_str}"/>
+                                <Button Text="Remove"
+                                            Clicked="DeleteRecord"
+                                            TextColor="Red"
+                                            HorizontalOptions="EndAndExpand"
+                                            BorderColor="Transparent"
+                                            BackgroundColor="Transparent"/>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <StackLayout Orientation="Horizontal"  HorizontalOptions="FillAndExpand">
+                <StackLayout Orientation="Vertical"  HorizontalOptions="FillAndExpand">
+                    <Button Text="Delete"
+                    Clicked="DeleteRecord" />
+                </StackLayout>
+                <StackLayout Orientation="Vertical"  HorizontalOptions="FillAndExpand">
+                    <Button Text="Modify"
+                Clicked="OnButtonClicked" />
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

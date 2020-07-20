@@ -1,69 +1,111 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using Syncfusion.SfNavigationDrawer.XForms;
+using Xamarin.Forms;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Xamarin.Forms;
-
+using System.Collections.Generic;
+using System.ComponentModel;
 namespace Better_Choices_1
 {
-    // Learn more about making custom code visible in the Xamarin.Forms previewer
-    // by visiting https://aka.ms/xamarinforms-previewer
     [DesignTimeVisible(false)]
     public partial class MainPage : ContentPage
     {
         public MainPage()
         {
             InitializeComponent();
+
+            // hamburgerButton.Image = (FileImageSource)ImageSource.FromFile("hamburger_icon.png");
+            List<string> list = new List<string>();
+            list.Add("Home");
+            list.Add("Recurring Entries");
+            list.Add("Stashes");
+
+            listView.ItemsSource = list;
+            navigationDrawer.ContentView = new Home().Content;
+            headerLabel.Text = "Home";
         }
 
 
-        protected override async void OnAppearing()
-        {
-            base.OnAppearing();
-            listView.ItemsSource = await App.Database.GetPeopleAsync();
-        }
 
-        async void OnButtonClicked(object sender, EventArgs e)
+        private void Handle_ItemSelected(object s, SelectedItemChangedEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(nameEntry.Text))
+            if (e.SelectedItem.ToString() == "Home")
             {
-                await App.Database.SavePersonAsync(new Habit
-                {
-                    Name = nameEntry.Text,
-                    Type = typePicker.Items[typePicker.SelectedIndex],
-                    date_started = dateEntry.Date,
-                    money_saved = Convert.ToDouble(moneySaved.Text),
-
-                    
-                });
-
-                nameEntry.Text  = string.Empty;
-                listView.ItemsSource = await App.Database.GetPeopleAsync();
+                navigationDrawer.ContentView = new Home().Content;
+                headerLabel.Text = "Home";
             }
-        }
-        public void OnMore(object sender, EventArgs e)
-        {
-            var mi = ((MenuItem)sender);
-            DisplayAlert("More Context Action", mi.CommandParameter + " more context action", "OK");
+            if (e.SelectedItem.ToString() == "Recurring Entries")
+            {
+                navigationDrawer.ContentView = new Job_Entry().Content;
+                headerLabel.Text = "Recurring Entries";
+            }
+            else if (e.SelectedItem.ToString() == "Remainders")
+            {
+                //navigationDrawer.ContentView = new Remainders().Content;
+                //headerLabel.Text = "Remainders";
+            }
+            else if (e.SelectedItem.ToString() == "Stashes")
+            {
+                navigationDrawer.ContentView = new DataForms.StashView().Content;
+                headerLabel.Text = "Recurring Entries";
+                // navigationDrawer.ContentView = new ToDoList().Content;
+                // headerLabel.Text = "ToDoList";
+            }
+            navigationDrawer.ToggleDrawer();
         }
 
-        public void OnDelete(object sender, EventArgs e)
+        void hamburgerButton_Clicked(object sender, EventArgs e)
         {
-            var mi = ((MenuItem)sender);
-            DisplayAlert("Delete Context Action", mi.CommandParameter + " delete context action", "OK");
+            navigationDrawer.ToggleDrawer();
         }
 
-        async void DeleteRecord(object sender, EventArgs e)
+        private void listView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            // await App.Database.DeleteHabitAsync(
-            //     Convert.ToInt32(listView.SelectedItem.ToString()));
-            // listView.ItemsSource = await App.Database.GetPeopleAsync();
-            /// int id =  App.Database.SearchAsync(listView.SelectedItem.ToString());
-            
-            //id_display.Text = new Habit(listView.SelectedItem).ID;
-
+            // Your codes here
+            navigationDrawer.ToggleDrawer();
         }
     }
 }
+
+//protected override async void OnAppearing()
+//{
+
+// base.OnAppearing();
+//listView.ItemsSource = await App.Database.GetPeopleAsync();
+//}
+
+//async void OnButtonClicked(object sender, EventArgs e)
+//{
+//   if (!string.IsNullOrWhiteSpace(nameEntry.Text))
+// {
+//    await App.Database.SavePersonAsync(new Habit
+//   {
+//      Name = nameEntry.Text,
+//      Type = typePicker.Items[typePicker.SelectedIndex],
+//      date_started = dateEntry.Date,
+//     money_saved = Convert.ToDouble(moneySaved.Text),
+
+
+// });
+
+//                nameEntry.Text  = string.Empty;
+//              listView.ItemsSource = await App.Database.GetPeopleAsync();
+//       }
+//}
+//public void OnMore(object sender, EventArgs e)
+ //      {
+  //          var mi = ((MenuItem)sender);
+   //         DisplayAlert("More Context Action", mi.CommandParameter + " more context action", "OK");
+    //    }
+
+//        public void OnDelete(object sender, EventArgs e)
+ //       {
+   //         var mi = ((MenuItem)sender);
+    //        DisplayAlert("Delete Context Action", mi.CommandParameter + " delete context action", "OK");
+      //  }
+        
+
+    //}
+//}

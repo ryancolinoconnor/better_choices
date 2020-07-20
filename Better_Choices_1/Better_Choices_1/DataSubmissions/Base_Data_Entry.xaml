@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             mc:Ignorable="d"
+             x:Class="Better_Choices_1.DataSubmissions.Base_Data_Entry">
+  <ContentView.Content>
+
+        <StackLayout x:Name="Base_Stack">
+            <StackLayout Orientation="Horizontal" 
+                            x:Name="radiogroupLayout"
+                            HorizontalOptions="FillAndExpand"
+                            VerticalOptions="StartAndExpand">
+            </StackLayout>
+
+            <Picker x:Name ="typePicker" 
+                            Title="Select the value type"
+                            SelectedIndex="1">
+                <Picker.Items>
+                    <x:String>One Time</x:String>
+                </Picker.Items>
+            </Picker>
+            <ContentView x:Name="Variable_Content"></ContentView>
+            <StackLayout Orientation="Horizontal">
+
+            </StackLayout>
+            <Grid VerticalOptions = "StartAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Entry x:Name="moneySaved2"
+                       Grid.Row="0" Grid.Column="0"
+                       FontSize="4"
+                   Placeholder="I would have paid"
+                   Keyboard="Numeric"
+                       HorizontalOptions="FillAndExpand"/>
+                <Entry x:Name="moneySaved"
+                       Grid.Row="0" Grid.Column="1"
+                   Placeholder="I now pay"
+                   Keyboard="Numeric"
+                   HorizontalOptions="FillAndExpand"
+                       TextChanged="moneySaved_TextChanged"/>
+            </Grid>
+            <StackLayout Orientation="Horizontal"  HorizontalOptions="FillAndExpand"
+                         x:Name="buttonholder">
+                <StackLayout Orientation="Vertical"  HorizontalOptions="FillAndExpand">
+                    <Button Text="Clear"
+                Clicked="Clear_OnButtonClicked" />
+                </StackLayout>
+                <StackLayout Orientation="Vertical"  HorizontalOptions="FillAndExpand">
+                    <Button Text="Create"
+                Clicked="OnButtonClicked" />
+                </StackLayout>
+            </StackLayout>
+            <Label Text="once you start to enter information this will be filled"
+                   x:Name="Calculator"/>
+        </StackLayout>
+      
+    </ContentView.Content>
+</ContentView>

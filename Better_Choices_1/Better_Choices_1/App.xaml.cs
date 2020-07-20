@@ -1,5 +1,6 @@
 ﻿using System;
 using Xamarin.Forms;
+
 using Xamarin.Forms.Xaml;
 using System.IO;
 using Better_Choices_1;
@@ -22,7 +23,7 @@ namespace Better_Choices_1
         public App()
         {
             InitializeComponent();
-
+ 
             MainPage = new MainPage();
         }
 

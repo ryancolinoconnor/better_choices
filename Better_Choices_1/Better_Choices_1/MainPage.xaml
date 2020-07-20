@@ -1,84 +1,54 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d"
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              x:Class="Better_Choices_1.MainPage"
-             Title="Better Decisions"
-             
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:navigationdrawer="clr-namespace:Syncfusion.SfNavigationDrawer.XForms;assembly=Syncfusion.SfNavigationDrawer.XForms"
+             xmlns:navigation="clr-namespace:Syncfusion.SfNavigationDrawer.XForms;assembly=Syncfusion.SfNavigationDrawer.XForms"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              >
 
-    <StackLayout Margin="20,35,20,20">
-        <!-- Place new controls here -->
-
-        <Entry x:Name="nameEntry"
-               Placeholder="Decision Title" />
-        <Picker x:Name ="typePicker" 
-                Title="Select the value type"
-                SelectedIndex="1">
-            <Picker.Items>
-                <x:String>Money</x:String>
-            </Picker.Items>
-        </Picker>
-        <DatePicker x:Name="dateEntry"
-                    />
-        <StackLayout Orientation="Horizontal"  HorizontalOptions="FillAndExpand">
-            <StackLayout Orientation="Vertical"  HorizontalOptions="FillAndExpand">
-                <Label Text="Decision 1 cost"/>
-                <Entry x:Name="moneySaved"
-                   Placeholder="0."
-                   Keyboard="Numeric"/>
-            </StackLayout>
-            <StackLayout Orientation="Vertical"  HorizontalOptions="FillAndExpand">
-                <Label Text="Decision 2 Cost"/>
-                <Entry x:Name="moneySaved2"
-                   Placeholder="0."
-                   Keyboard="Numeric"/>
-            </StackLayout>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="660"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackLayout BackgroundColor="#1aa1d6" Grid.Row="0" Orientation="Horizontal">
+            <Button x:Name="hamburgerButton" HeightRequest="50" WidthRequest="50" HorizontalOptions="Start" FontSize="20" BackgroundColor="#1aa1d6" Clicked="hamburgerButton_Clicked"/>
+            <Label x:Name="headerLabel" HeightRequest="50" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="Home" FontSize="16" TextColor="White" BackgroundColor="#1aa1d6"/>
         </StackLayout>
-        <StackLayout Orientation="Horizontal"  HorizontalOptions="FillAndExpand">
-            <StackLayout Orientation="Vertical"  HorizontalOptions="FillAndExpand">
-                <Button Text="Clear"
-                Clicked="OnButtonClicked" />
-            </StackLayout>
-            <StackLayout Orientation="Vertical"  HorizontalOptions="FillAndExpand">
-                <Button Text="Create"
-                Clicked="OnButtonClicked" />
-            </StackLayout>
-        </StackLayout>
+        <navigation:SfNavigationDrawer Grid.Row="1" x:Name="navigationDrawer" DrawerWidth ="200" DrawerHeaderHeight="160">
+            <navigationdrawer:SfNavigationDrawer.ContentView>
+                <Grid x:Name="mainContentView" 
+                  BackgroundColor="White">
 
-        <ListView x:Name="listView">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <ViewCell.ContextActions>
-                            <MenuItem Clicked="OnMore"
-                                CommandParameter="{Binding .}"
-                                Text="More" />
-                            <MenuItem Clicked="OnDelete"
-                                CommandParameter="{Binding .}"
-                                Text="Delete" IsDestructive="True" />
-                        </ViewCell.ContextActions>
-                        <StackLayout Padding="15,0">
-                            <Label Text="{Binding Name}" />
-                        </StackLayout>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        <StackLayout Orientation="Horizontal"  HorizontalOptions="FillAndExpand">
-            <StackLayout Orientation="Vertical"  HorizontalOptions="FillAndExpand">
-                <Button Text="Delete"
-                Clicked="DeleteRecord" />
-            </StackLayout>
-            <StackLayout Orientation="Vertical"  HorizontalOptions="FillAndExpand">
-                <Button Text="Modify"
-                Clicked="OnButtonClicked" />
-            </StackLayout>
-        </StackLayout>
-        <Label Text="ID"
-               x:Name="id_display"/>
-    </StackLayout>
-
+                   
+                </Grid>
+            </navigationdrawer:SfNavigationDrawer.ContentView>
+            <navigation:SfNavigationDrawer.DrawerHeaderView>
+                <Grid BackgroundColor="#1aa1d6">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="120"/>
+                        <RowDefinition Height="40"/>
+                    </Grid.RowDefinitions>
+                    <Image Source="user.png" HeightRequest="110" Margin="0,10,0,0" BackgroundColor="#1aa1d6" VerticalOptions="Center" HorizontalOptions="Center"/>
+                    <Label Text="James Pollock" Grid.Row="1" HorizontalTextAlignment="Center" 
+                           HorizontalOptions="Center" FontSize="20" TextColor="White"/>
+                </Grid>
+            </navigation:SfNavigationDrawer.DrawerHeaderView>
+            <navigation:SfNavigationDrawer.DrawerContentView>
+                <ListView x:Name="listView" ItemSelected ="Handle_ItemSelected">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout HeightRequest="40">
+                                    <Label Margin="10,7,0,0" Text="{Binding}" FontSize="16"/>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </navigation:SfNavigationDrawer.DrawerContentView>
+        </navigation:SfNavigationDrawer>
+    </Grid>
 </ContentPage>

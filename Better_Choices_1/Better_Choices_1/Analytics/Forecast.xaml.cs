@@ -43,7 +43,7 @@ namespace Better_Choices_1.Analytics
             chart.Series.Add(series);
             this.Content = chart;
         }
-        public Forecast(string filter)
+        public Forecast(string filter,DateTime start_date,DateTime end_date)
         {
             InitializeComponent();
             SfChart chart = new SfChart();
@@ -59,7 +59,7 @@ namespace Better_Choices_1.Analytics
             secondaryAxis.Title.Text = "Savings";
             chart.SecondaryAxis = secondaryAxis;
 
-            ViewDates view = new ViewDates(filter);
+            ViewDates view = new ViewDates(filter, start_date,end_date);
 
 
 

@@ -7,6 +7,7 @@ using Syncfusion.XForms.ComboBox;
 using Xamarin.Forms;
 using Rg.Plugins.Popup.Pages;
 using Rg.Plugins.Popup.Extensions;
+using Better_Choices_1.TemplateForms;
 
 namespace Better_Choices_1
 {
@@ -17,6 +18,7 @@ namespace Better_Choices_1
         StackLayout combobox_holder;
         Better_Choices_1.Analytics.Forecast forecast;
         ContentView forc_;
+        query_attrs _query_selector;
         public Home()
         {
             InitializeComponent();
@@ -25,7 +27,7 @@ namespace Better_Choices_1
             
             data_entry = new DataSubmissions.Base_Data_Entry(combobox.Text, this);
             Example1.Content = data_entry.Content;
-            OnAppearing();
+            
 
 
 
@@ -50,8 +52,13 @@ namespace Better_Choices_1
             combobox_holder.HorizontalOptions = Xamarin.Forms.LayoutOptions.Center;
             Add_stash.HorizontalOptions = Xamarin.Forms.LayoutOptions.Start;
             Add_stash.Clicked += Create_Stash;
-            MainGrid.Children.Add(combobox, 1, 1);
-            MainGrid.Children.Add(Add_stash, 2, 1);
+            MainGrid.RowDefinitions.Insert(1, new RowDefinition { 
+                Height = new GridLength(5,GridUnitType.Auto) });
+
+            _query_selector = new query_attrs(DateTime.Today.AddDays(-7), DateTime.Today.AddDays(7), this);
+            MainGrid.Children.Add(_query_selector, 1, 1);
+            MainGrid.Children.Add(combobox, 1, 2);
+            MainGrid.Children.Add(Add_stash, 2, 2);
 
             StackLayout hider = new StackLayout();
             hider.BackgroundColor = Xamarin.Forms.Color.LightBlue;
@@ -99,6 +106,7 @@ namespace Better_Choices_1
             forecast.HeightRequest = 300;
             forecast_hider.MinimumHeightRequest = hider.Height;
             this.nullcb();
+            OnAppearing();
 
         }
         void switch_OnToggled(object sender, ToggledEventArgs e)
@@ -138,23 +146,35 @@ namespace Better_Choices_1
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            this.refresh();
+            
             data_entry = new DataSubmissions.Base_Data_Entry(combobox.Text, this);
             Example1.Content = data_entry.Content;
-            
+            this.refresh();
+
         }
         public async void refresh()
         {
-            jobs_view.ItemsSource = App.Database.GetNamedJobsAsync();
-            Aggregation.Text = "$" + Convert.ToString(Math.Round(App.Database.money_saved(),2)) + " saved ";
+            jobs_view.ItemsSource = App.Database.GetNamedJobsAsync(combobox.Text,
+                _query_selector.start_date()
+                ,_query_selector.end_date());
+
+            Aggregation.Text = "$" + Convert.ToString(Math.Round(
+                App.Database.money_saved(
+                    combobox.Text, _query_selector.start_date(),
+                    _query_selector.end_date()
+                    ),2)) + " saved ";
             data_entry.refresh();
+            forecast.Content = new Analytics.Forecast((combobox.Text),_query_selector.start_date(),
+                                    _query_selector.end_date()).Content;
+
+            data_entry.set_stash((combobox.Text));
             //data_entry = new DataSubmissions.Base_Data_Entry();
             //Example1.Content = data_entry.Content;
 
         }
         private async void nullcb()
         {
-            combobox.Text = "General Savings";
+            combobox.Text = "";
             combobox.SelectedIndex = combobox.SelectedIndex;
             combobox.TextColor = Xamarin.Forms.Color.Gray;
         }
@@ -170,10 +190,11 @@ namespace Better_Choices_1
             else
             {
                 combobox.TextColor = Xamarin.Forms.Color.Black;
-                forecast.Content = new Analytics.Forecast((combobox.Text)).Content;
-                jobs_view.ItemsSource = App.Database.GetNamedJobsAsync(combobox.Text);
-                data_entry.set_stash((combobox.Text));
-                
+                // forecast.Content = new Analytics.Forecast((combobox.Text)).Content;
+                // jobs_view.ItemsSource = App.Database.GetNamedJobsAsync(combobox.Text,_query_selector.start_date(),
+                //    _query_selector.end_date());
+                // data_entry.set_stash((combobox.Text));
+                this.refresh();
             }
 
         }

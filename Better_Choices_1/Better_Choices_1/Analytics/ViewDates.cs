@@ -11,9 +11,9 @@ namespace Better_Choices_1.Analytics
         public ViewDates() {
             this.Data = App.Database.money_saved_per_date();
         }
-        public ViewDates(string filter = "")
+        public ViewDates(string filter = "",DateTime? start_date=null,DateTime? end_date=null)
         {
-            this.Data = App.Database.money_saved_per_date(filter);
+            this.Data = App.Database.money_saved_per_date(filter,start_date,end_date);
         }
     }
 }

@@ -48,7 +48,10 @@ namespace Better_Choices_1
         }
         public double GetStashTarget(string name)
         {
-            string sql = "select * from Stash where Name='" + name + "'";
+            string sql = "select * from Stash";
+            if (name != "") {
+                sql = "select * from Stash where Name='" + name + "'"; 
+            }
             var stashes = _database.QueryAsync<Stash>(sql).Result.ToList();
             return stashes.First().target_savings;
         }
@@ -58,9 +61,12 @@ namespace Better_Choices_1
             var stashes = _database.QueryAsync<Stash>(sql).Result.ToList();
             return stashes.First().ID;
         }
-        public List<Named_Habit_Data> GetNamedJobsAsync(string stash_="")
+        public List<Named_Habit_Data> GetNamedJobsAsync(string stash_="",
+                                                        DateTime? start_date=null,
+                                                        DateTime? end_date=null)
         {
-
+            start_date = start_date ?? DateTime.MinValue;
+            end_date = end_date ?? DateTime.MaxValue;
             string sql = "SELECT Name as name,Habit_Data.* FROM HABIT inner join Habit_data on habit.id=habit_data.job_id";
             var habits = _database.Table<Habit>().ToListAsync().Result.ToList();
             var dat_ = _database.Table<Habit_Data>().ToListAsync().Result.ToList();
@@ -83,6 +89,7 @@ namespace Better_Choices_1
             {
                 stashes = stashes.Where(stash => stash.Name == stash_).ToList();
             }
+            resultList = resultList.Where(habit => (end_date >= habit.date_run) && (habit.date_run >= start_date)).ToList();
             var resultList2 = (
                                 from stash in stashes
                                 join data_ in resultList
@@ -102,14 +109,19 @@ namespace Better_Choices_1
         }
 
 
-        public double money_saved()
+        public double money_saved(string stash_ = "",
+                                                        DateTime? start_date = null,
+                                                        DateTime? end_date = null)
         {
-            return (from habit_data in this.GetNamedJobsAsync()
+            return (from habit_data in this.GetNamedJobsAsync(stash_,start_date,end_date)
                     select (habit_data.money_saved)).ToList().Sum();
         }
-        public List<Better_Choices_1.Analytics.Date_Value> money_saved_per_date(String stash="")
+        public List<Better_Choices_1.Analytics.Date_Value> money_saved_per_date(String stash="",
+                                                        DateTime? start_date = null,
+                                                        DateTime? end_date = null)
         {
-            var ls = this.GetNamedJobsAsync(stash);
+
+            var ls = this.GetNamedJobsAsync(stash,start_date,end_date);
             var targetlist = ls.OrderBy(l=>l.date_str).GroupBy(l => l.date_str).Select(cl => new Better_Choices_1.Analytics.Date_Value
             {
                 Date = cl.First().date_str,
@@ -122,6 +134,7 @@ namespace Better_Choices_1
                 sum += dv.value;
                 dv.value = sum;
             }
+            
             return targetlist;
         }
         // public double money_saved_date()

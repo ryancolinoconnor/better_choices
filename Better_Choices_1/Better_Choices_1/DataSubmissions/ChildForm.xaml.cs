@@ -16,8 +16,7 @@ namespace Better_Choices_1.DataSubmissions
     {
         StackLayout date_parent;
         labeled_date start_date;
-        public Grid Common_ { get { return Common; }
-        }
+        public Grid Common_ { get { return Common; }}
         public ChildForm()
         {
             InitializeComponent();

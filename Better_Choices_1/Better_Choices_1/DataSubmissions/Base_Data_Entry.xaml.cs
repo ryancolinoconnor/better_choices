@@ -241,7 +241,7 @@ namespace Better_Choices_1.DataSubmissions
         {
 
 
-            await Navigation.PushPopupAsync(new TemplateForms.MyPopupPage(new Money_Stashes.Base_Data_Entry()));
+            await Navigation.PushPopupAsync(new TemplateForms.MyPopupPage(new Money_Stashes.Base_Data_Entry(parent_)));
             parent_.refresh();
             //await PopupNavigation.PushAsync();
             //await PopupNavigation.PushAsync(new PopUp());

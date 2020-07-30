@@ -7,11 +7,18 @@ namespace Better_Choices_1.Analytics
     public class Date_Value
     {
         public Date_Value() { }
-        public Date_Value(string Date_,double value_) {
+        public Date_Value(string Date_, double value_)
+        {
             this.Date = Date_;
             this.value = value_;
         }
+        public Date_Value(string Date_,double value_,DateTime Date_actual_) {
+            this.Date = Date_;
+            this.value = value_;
+            this.Date_actual = Date_actual_;
+        }
         public string Date { get; set; }
+        public DateTime Date_actual { get; set; }
         public double value { get; set; }
         public static Date_Value operator +(Date_Value a, double b) => new Date_Value(a.Date, b + a.value);
         public static Date_Value operator +(double b, Date_Value a) => new Date_Value(a.Date, b + a.value);

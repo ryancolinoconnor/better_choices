@@ -21,7 +21,6 @@ namespace Better_Choices_1
             _database.CreateTableAsync<Habit_Data>().Wait();
             _database.CreateTableAsync<Stash>().Wait();
         }
-
         public Task<List<Habit>> GetPeopleAsync()
         {
             
@@ -52,7 +51,12 @@ namespace Better_Choices_1
             if (name != "") {
                 sql = "select * from Stash where Name='" + name + "'"; 
             }
+
             var stashes = _database.QueryAsync<Stash>(sql).Result.ToList();
+            if (stashes.Count == 0)
+            {
+                return 0;
+            }
             return stashes.First().target_savings;
         }
         public int GetStashesID(string name)
@@ -122,11 +126,12 @@ namespace Better_Choices_1
         {
 
             var ls = this.GetNamedJobsAsync(stash,start_date,end_date);
-            var targetlist = ls.OrderBy(l=>l.date_str).GroupBy(l => l.date_str).Select(cl => new Better_Choices_1.Analytics.Date_Value
+            var targetlist = ls.OrderBy(l => l.date_str).GroupBy(l => l.date_run).Select(cl => new Better_Choices_1.Analytics.Date_Value
             {
                 Date = cl.First().date_str,
-                value = cl.Sum(c => c.money_saved)
-            }).ToList();
+                value = cl.Sum(c => c.money_saved),
+                Date_actual = cl.First().date_run
+            }).ToList().OrderBy(l => l.Date_actual).ToList();
             
             double sum = 0;
             foreach (Date_Value dv in targetlist)
@@ -141,12 +146,19 @@ namespace Better_Choices_1
         //{
 
         //}
+
         public Task<int> SaveItemAsync(Habit item)
         {
             return _database.InsertAsync(item);
         }
         public Task<int> SaveItemAsync(Stash item)
         {
+            if (item.ID != 0)
+            {
+                return _database.UpdateAsync(item);
+            }
+            
+ 
             return _database.InsertAsync(item);
         }
         public Task<int> SaveItemAsync(Habit_Data item)

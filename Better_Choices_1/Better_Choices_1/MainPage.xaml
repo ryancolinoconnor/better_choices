@@ -7,35 +7,28 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              >
 
-    <Grid>
+    <Grid MinimumHeightRequest="10000">
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="660"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="780"/>
             <RowDefinition/>
+            
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
         <StackLayout BackgroundColor="#1aa1d6" Grid.Row="0" Orientation="Horizontal">
             <Button x:Name="hamburgerButton" HeightRequest="50" WidthRequest="50" HorizontalOptions="Start" FontSize="20" BackgroundColor="#1aa1d6" Clicked="hamburgerButton_Clicked"/>
             <Label x:Name="headerLabel" HeightRequest="50" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="Home" FontSize="16" TextColor="White" BackgroundColor="#1aa1d6"/>
         </StackLayout>
-        <navigation:SfNavigationDrawer Grid.Row="1" x:Name="navigationDrawer" DrawerWidth ="200" DrawerHeaderHeight="160">
-            <navigationdrawer:SfNavigationDrawer.ContentView>
+        <navigation:SfNavigationDrawer Grid.Row="1" x:Name="navigationDrawer" DrawerWidth ="200" DrawerHeaderHeight="0">
+            <navigationdrawer:SfNavigationDrawer.ContentView >
                 <Grid x:Name="mainContentView" 
                   BackgroundColor="White">
 
                    
                 </Grid>
             </navigationdrawer:SfNavigationDrawer.ContentView>
-            <navigation:SfNavigationDrawer.DrawerHeaderView>
-                <Grid BackgroundColor="#1aa1d6">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="120"/>
-                        <RowDefinition Height="40"/>
-                    </Grid.RowDefinitions>
-                    <Image Source="user.png" HeightRequest="110" Margin="0,10,0,0" BackgroundColor="#1aa1d6" VerticalOptions="Center" HorizontalOptions="Center"/>
-                    <Label Text="James Pollock" Grid.Row="1" HorizontalTextAlignment="Center" 
-                           HorizontalOptions="Center" FontSize="20" TextColor="White"/>
-                </Grid>
-            </navigation:SfNavigationDrawer.DrawerHeaderView>
             <navigation:SfNavigationDrawer.DrawerContentView>
                 <ListView x:Name="listView" ItemSelected ="Handle_ItemSelected">
                     <ListView.ItemTemplate>

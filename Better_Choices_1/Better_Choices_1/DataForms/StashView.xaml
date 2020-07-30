@@ -14,7 +14,14 @@
                             <ViewCell.View>
                                 <StackLayout Orientation="Horizontal">
                                     <Label Text="{Binding Name}" />
-                                    <Button Text="Remove"
+                                    <Button Text="Modify"
+                                            Clicked="ModifyRecord"
+                                            TextColor="Gray"
+                                            HorizontalOptions="EndAndExpand"
+                                            BorderColor="Transparent"
+                                            BackgroundColor="Transparent"/>
+
+                                <Button Text="Remove"
                                             Clicked="DeleteRecord"
                                             TextColor="Red"
                                             HorizontalOptions="EndAndExpand"

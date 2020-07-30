@@ -131,7 +131,7 @@ namespace Better_Choices_1
         {
 
 
-            await Navigation.PushPopupAsync(new TemplateForms.MyPopupPage(new Money_Stashes.Base_Data_Entry()));
+            await Navigation.PushPopupAsync(new TemplateForms.MyPopupPage(new Money_Stashes.Base_Data_Entry(this)));
             this.refresh();
             //await PopupNavigation.PushAsync();
             //await PopupNavigation.PushAsync(new PopUp());
@@ -158,6 +158,7 @@ namespace Better_Choices_1
                 _query_selector.start_date()
                 ,_query_selector.end_date());
 
+            combobox.DataSource = App.Database.GetStashesNames();
             Aggregation.Text = "$" + Convert.ToString(Math.Round(
                 App.Database.money_saved(
                     combobox.Text, _query_selector.start_date(),

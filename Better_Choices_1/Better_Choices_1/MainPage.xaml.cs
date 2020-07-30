@@ -24,6 +24,8 @@ namespace Better_Choices_1
 
             listView.ItemsSource = list;
             navigationDrawer.ContentView = new Home().Content;
+            navigationDrawer.VerticalOptions = Xamarin.Forms.LayoutOptions.EndAndExpand;
+            navigationDrawer.HeightRequest = 1000;
             headerLabel.Text = "Home";
         }
 

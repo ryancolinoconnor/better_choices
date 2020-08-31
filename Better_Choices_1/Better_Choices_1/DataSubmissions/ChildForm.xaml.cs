@@ -16,6 +16,30 @@ namespace Better_Choices_1.DataSubmissions
     {
         StackLayout date_parent;
         labeled_date start_date;
+        Recurring habit_;
+        Habit_Data habit_data;
+        public void let_habit(Recurring habit)
+        {
+            habit_ = habit;
+            start_date.Date = habit.date_started;
+            this.setup_around_habit(habit);
+        }
+        public void let_habit(Habit_Data habit)
+        {
+            habit_data = habit;
+            start_date.Date = habit.date_run;
+            this.setup_around_habit(habit);
+        }
+
+        public virtual void setup_around_habit(Recurring habit)
+        {
+
+        }
+        public virtual void setup_around_habit(Habit_Data habit)
+        {
+
+        }
+
         public Grid Common_ { get { return Common; }}
         public ChildForm()
         {
@@ -27,13 +51,15 @@ namespace Better_Choices_1.DataSubmissions
             // Common.Children.Insert(0,Common_);
             //Common.Orientation = Xamarin.Forms.StackOrientation.Horizontal;
         }
+
+        
         public void let_text(string str) { start_date.let_text(str); }
         public virtual void refresh(){}
         public virtual DateTime end_date(){ return default(DateTime); }
         public virtual DateTime get_start_date() { return start_date.Date; }
         public virtual DateTime get_end_date() { return start_date.Date; }
         public virtual string helper_str() { return ""; }
-
+        public virtual string type() { return "One Time"; }
         public virtual string frequency_1() { return "Default"; }
         public virtual double how_common_1() { return 1; }
         public virtual string frequency_2() { return "Default"; }

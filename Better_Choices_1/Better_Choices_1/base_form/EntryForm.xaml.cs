@@ -6,17 +6,17 @@ using Rg.Plugins.Popup.Pages;
 using Rg.Plugins.Popup.Extensions;
 
 
-namespace Better_Choices_1
+namespace Better_Choices_1.base_form
 {
-    public partial class Job_Entry : ContentPage
+    public partial class EntryForm : ContentPage
     {
-        public Job_Entry()
+        public EntryForm()
         {
             InitializeComponent();
             OnAppearing();
 
         }
-        Recurring Selected_;
+        Habit_Data Selected_;
         protected override async void OnAppearing()
         {
             base.OnAppearing();
@@ -26,7 +26,7 @@ namespace Better_Choices_1
         }
         private async void refresh()
         {
-            db_view.ItemsSource = await App.Database.GetPeopleAsync();
+            db_view.ItemsSource = await App.Database.GetEntriesAsync();
 
         }
 
@@ -34,7 +34,7 @@ namespace Better_Choices_1
         {
             try
             {
-                Selected_ = (Recurring)e.SelectedItem;
+                Selected_ = (Habit_Data)e.SelectedItem;
             }
             catch (Exception)
             {
@@ -63,7 +63,7 @@ namespace Better_Choices_1
         async void DeleteRecord(object sender, EventArgs e)
         {
             var button = sender as Button;
-            var obj_ = button.BindingContext as Recurring;
+            var obj_ = button.BindingContext as Habit_Data;
             await App.Database.DeleteItemAsync(obj_);
             this.refresh();
 
@@ -71,7 +71,7 @@ namespace Better_Choices_1
 
         async void ModifyRecord(object sender, EventArgs e)
         {
-            var obj_ = (sender as Button).BindingContext as Recurring;
+            var obj_ = (sender as Button).BindingContext as Habit_Data;
             await Navigation.PushPopupAsync(new TemplateForms.MyPopupPage(new DataSubmissions.habit_data_modification(obj_)));
             this.refresh();
 

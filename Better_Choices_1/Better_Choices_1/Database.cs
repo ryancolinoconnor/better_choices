@@ -5,6 +5,7 @@ using System.Linq;
 using Better_Choices_1;
 using System;
 using Better_Choices_1.Analytics;
+using Xamarin.Forms.PlatformConfiguration.TizenSpecific;
 
 namespace Better_Choices_1
 {
@@ -17,15 +18,23 @@ namespace Better_Choices_1
         public Database(string dbPath)
         {
             _database = new SQLiteAsyncConnection(dbPath);
-            _database.CreateTableAsync<Habit>().Wait();
+            _database.CreateTableAsync<Recurring>().Wait();
             _database.CreateTableAsync<Habit_Data>().Wait();
             _database.CreateTableAsync<Stash>().Wait();
+            string sql = "drop table Habit";
+            //_database.ExecuteAsync(sql);
         }
-        public Task<List<Habit>> GetPeopleAsync()
+        public Task<List<Recurring>> GetPeopleAsync()
         {
             
-            return _database.Table<Habit>().ToListAsync();
+            return _database.Table<Recurring>().ToListAsync();
             
+        }
+        public Task<List<Habit_Data>> GetEntriesAsync()
+        {
+
+            return _database.Table<Habit_Data>().ToListAsync();
+
         }
         public Task<List<Stash>> GetStashesAsync()
         {
@@ -72,7 +81,7 @@ namespace Better_Choices_1
             start_date = start_date ?? DateTime.MinValue;
             end_date = end_date ?? DateTime.MaxValue;
             string sql = "SELECT Name as name,Habit_Data.* FROM HABIT inner join Habit_data on habit.id=habit_data.job_id";
-            var habits = _database.Table<Habit>().ToListAsync().Result.ToList();
+            var habits = _database.Table<Recurring>().ToListAsync().Result.ToList();
             var dat_ = _database.Table<Habit_Data>().ToListAsync().Result.ToList();
             var resultList = (from habit in habits
                               join data_ in dat_
@@ -142,16 +151,85 @@ namespace Better_Choices_1
             
             return targetlist;
         }
+        public void update_habit_data_for_habit(Recurring item, bool after_today=false)
+        {
+            DateTime? occurence_date;
+            if (after_today)
+            {
+                occurence_date = DateTime.Today;
+            }
+            else
+            {
+                occurence_date = null;
+            }
+            delete_habits_data(item, occurence_date);
+
+            //todo add option to resolve occurence_date
+            save_habit_data(item, occurence_date);
+            
+        }
+        public List<Habit_Data> habit_data_for_habit(Recurring item, DateTime? occurence_date = null)
+        {
+            string sql = "select * from habit_data where habit_data.job_id=" + Convert.ToString(item.ID);
+            List<Habit_Data> output = _database.QueryAsync<Habit_Data>(sql).Result.ToList();
+
+            output = output.Where(habit=> (habit.date_run >= occurence_date)).ToList();
+            return output;
+        }
+        public async void save_habit_data(Recurring Habit_, DateTime? occurence_date = null)
+        {
+            int i = 0;
+            if (occurence_date == null)
+            {
+                occurence_date = Habit_.date_started;
+            }
+            occurence_date = Convert.ToDateTime(occurence_date);
+            DateTime dt = Convert.ToDateTime(occurence_date);
+            while (occurence_date <= Habit_.date_ended)
+            {
+                var Habit_Data_ = new Habit_Data
+                {
+                    //Job = Habit_,
+                    Job_ID = Habit_.ID,
+                    date_run = dt,
+                    money_saved = Habit_.money_saved,
+                    money_stored = Habit_.money_saved,
+                    stash_to_use = Habit_.stash_to_use
+
+                };
+                await SaveItemAsync(Habit_Data_);
+                occurence_date = new utils_data.FrequencyTranslator().AddDate(Habit_, dt);
+            }
+
+            //return Habit_Data_;
+
+        }
+
+        public void delete_habits_data(Recurring item,DateTime? occurence_date=null)
+        {
+            List<Habit_Data> habit_datas = habit_data_for_habit(item, occurence_date);
+            foreach (Habit_Data habit_data_ in habit_datas)
+            {
+                DeleteItemAsync(habit_data_);
+            }
+
+        }
         // public double money_saved_date()
         //{
 
         //}
 
-        public Task<int> SaveItemAsync(Habit item)
+        public Task<int> SaveItemAsync(Habit_Data item)
         {
+            if (item.ID != 0)
+            {
+                return _database.UpdateAsync(item);
+            }
+
+
             return _database.InsertAsync(item);
         }
-        public Task<int> SaveItemAsync(Stash item)
+            public Task<int> SaveItemAsync(Stash item)
         {
             if (item.ID != 0)
             {
@@ -161,12 +239,22 @@ namespace Better_Choices_1
  
             return _database.InsertAsync(item);
         }
-        public Task<int> SaveItemAsync(Habit_Data item)
+        public Task<int> SaveItemAsync(Recurring item, bool after_today=false)
         {
-            return _database.InsertAsync(item);
+            if (item.ID != 0)
+            {
+                update_habit_data_for_habit(item, after_today);
+
+                return _database.UpdateAsync(item);
+            }
+
+            else
+            {
+                return _database.InsertAsync(item);
+            }
         }
 
-        public Task<int> SavePersonAsync(Habit habit)
+        public Task<int> SavePersonAsync(Recurring habit)
         {
             return _database.InsertAsync(habit);
         }
@@ -195,19 +283,19 @@ namespace Better_Choices_1
         {
             return _database.DeleteAsync(item);
         }
-        public Task<int> DeleteItemAsync(Habit item)
+        public Task<int> DeleteItemAsync(Recurring item)
         {
             return _database.DeleteAsync(item);
         }
 
-        public Task<int> DeleteHabitAsync(Habit habit_inst)
+        public Task<int> DeleteHabitAsync(Recurring habit_inst)
         {
             return _database.DeleteAsync(habit_inst);
         }
         public int SearchAsync(string habit_name)
         {
             string sql = "SELECT ID FROM HABIT WHERE NAME ='{habit_name}'";
-            return _database.QueryAsync<Habit>(sql).Result.ToArray()[0].ID;
+            return _database.QueryAsync<Recurring>(sql).Result.ToArray()[0].ID;
         }
     }
 }

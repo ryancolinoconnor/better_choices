@@ -22,6 +22,7 @@ namespace Better_Choices_1
             list.Add("Recurring Entries");
             list.Add("Stashes");
 
+            list.Add("Entries");
             listView.ItemsSource = list;
             navigationDrawer.ContentView = new Home().Content;
             navigationDrawer.VerticalOptions = Xamarin.Forms.LayoutOptions.EndAndExpand;
@@ -38,11 +39,17 @@ namespace Better_Choices_1
                 navigationDrawer.ContentView = new Home().Content;
                 headerLabel.Text = "Home";
             }
-            if (e.SelectedItem.ToString() == "Recurring Entries")
+            else if (e.SelectedItem.ToString() == "Recurring Entries")
             {
                 navigationDrawer.ContentView = new Job_Entry().Content;
                 headerLabel.Text = "Recurring Entries";
             }
+            else if (e.SelectedItem.ToString() == "Entries")
+            {
+                navigationDrawer.ContentView = new base_form.EntryForm().Content;
+                headerLabel.Text = "Entries";
+            }
+
             else if (e.SelectedItem.ToString() == "Remainders")
             {
                 //navigationDrawer.ContentView = new Remainders().Content;

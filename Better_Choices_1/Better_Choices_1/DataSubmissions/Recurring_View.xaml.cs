@@ -15,6 +15,7 @@ namespace Better_Choices_1.DataSubmissions
     {
         labeled_date end_date_picker;
         Better_Choices_1.DataSubmissions.ControlTemplates.FrequencySelector freq_;
+        Recurring habit_;
         public Recurring_View(): base()
         {
             InitializeComponent();
@@ -25,10 +26,19 @@ namespace Better_Choices_1.DataSubmissions
             Common_.Children.Add(end_date_picker,1,0);
 
         }
-        
+        public override void setup_around_habit(Recurring habit) {
+            habit_ = habit;
+            end_date_picker.Date = habit_.date_ended;
+            freq_.let_data(habit_.how_common, habit_.frequency);
+
+            
+        }
         public override void refresh() { freq_.refresh();}
         public override DateTime end_date() { return end_date_picker.Date; }
-
+        public override string type()
+        {
+            return "Recurring";
+        }
         public override DateTime get_end_date() { return end_date_picker.Date; }
         public override string frequency_1() { return freq_.frequency(); }
         public override double how_common_1() { return freq_.how_common(); }

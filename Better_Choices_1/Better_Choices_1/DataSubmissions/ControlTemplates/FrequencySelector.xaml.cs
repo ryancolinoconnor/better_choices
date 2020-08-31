@@ -46,6 +46,14 @@ namespace Better_Choices_1.DataSubmissions.ControlTemplates
             return combobox.Text; 
         
         }
+
+        public void let_data(double how_common,string frequency)
+        {
+            freq_num.Text = Convert.ToString(how_common);
+            combobox.Text = frequency;
+
+
+        }
         public double how_common() {
             double output = 0.0;
             double.TryParse(freq_num.Text,out output);

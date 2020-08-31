@@ -17,23 +17,24 @@ namespace Better_Choices_1.DataSubmissions
     public partial class Base_Data_Entry : ContentView
     {
         ChildForm child_form;
-
+        Dictionary<String, SfRadioButton> radiogroupcontrollers;
+        Recurring habit_;
+        Habit_Data habit_data;
 
         StackLayout all_content;
         Entry nameEntry;
         StackLayout radiogrouplayout;
         Home parent_;
-        public Base_Data_Entry(string stash_id, Home parent)
+        private void InitializeBase()
         {
-            InitializeComponent();
-            this.set_stash(stash_id);
-            parent_ = parent;
-            //ChildForm child_form = new ChildForm();
+            // ChildForm child_form = new ChildForm();
             // OnAppearing();
             // radiogroupLayout = new StackLayout();
+            habit_ = null;
+            habit_data = null;
             all_content = new StackLayout();
             Base_Stack.Children.Insert(1, all_content);
-            
+
             child_form = new One_Time();
             Variable_Content.Content = child_form.Content;
             SfRadioGroupKey radioGroup = new SfRadioGroupKey();
@@ -45,7 +46,7 @@ namespace Better_Choices_1.DataSubmissions
             radiogrouplayout = new StackLayout();
             radiogrouplayout.Orientation = Xamarin.Forms.StackOrientation.Horizontal;
             radiogroupLayout.HorizontalOptions = Xamarin.Forms.LayoutOptions.FillAndExpand;
-            all_content.Children.Insert(0,nameEntry);
+            all_content.Children.Insert(0, nameEntry);
             all_content.Children.Insert(1, radiogroupLayout);
 
 
@@ -62,18 +63,17 @@ namespace Better_Choices_1.DataSubmissions
             radiogroupLayout.Children.Add(one_time);
             radiogroupLayout.Children.Add(recurring);
             radiogroupLayout.Children.Add(bulk);
+            radiogroupcontrollers = new Dictionary<string, SfRadioButton> { };
+            foreach (SfRadioButton child in radiogroupLayout.Children)
+            {
+                radiogroupcontrollers[child.Text] = child;
+            }
             radiogroupLayout.HorizontalOptions = Xamarin.Forms.LayoutOptions.FillAndExpand;
             one_time.StateChanged += RadioButton_StateChanged;
             recurring.StateChanged += RadioButton_StateChanged;
             bulk.StateChanged += RadioButton_StateChanged;
             nameEntry.Text = string.Empty;
             typePicker.IsVisible = false;
-
-
-
-
-
-
 
 
             moneySaved.TextChanged += let_refresh;
@@ -83,6 +83,55 @@ namespace Better_Choices_1.DataSubmissions
 
             //Add_stash.Clicked += btnPopupButton_Clicked;
             //child_form.refresh();
+
+        }
+        public Base_Data_Entry()
+        {
+            InitializeComponent();
+
+            this.InitializeBase();
+        }
+        public void set_habit(Recurring habit)
+        {
+            habit_ = habit;
+            radiogroupcontrollers[habit.Type].IsChecked = true;
+            child_form.let_habit(habit);
+            moneySaved.Text = Convert.ToString(habit.money_saved_2);
+            moneySaved2.Text = Convert.ToString(habit.money_saved_1);
+            nameEntry.Text = habit.Name;
+            
+        }
+        public void set_habit(Habit_Data habit)
+        {
+            habit_data = habit;
+            radiogroupcontrollers["One Time"].IsChecked = true;
+            child_form.let_habit(habit);
+            moneySaved2.Text = Convert.ToString(habit.money_saved);
+            //moneySaved2.Text = Convert.ToString(habit.money_saved_1);
+            nameEntry.Text = "Habit";
+
+        }
+
+        public Base_Data_Entry(Recurring habit)
+        {
+            InitializeComponent();
+            this.InitializeBase();
+            this.set_habit(habit);
+        }
+        public Base_Data_Entry(Habit_Data habit)
+        {
+            InitializeComponent();
+            this.InitializeBase();
+            this.set_habit(habit);
+        }
+
+
+        public Base_Data_Entry(string stash_id, Home parent)
+        {
+            InitializeComponent();
+            this.set_stash(stash_id);
+            parent_ = parent;
+            this.InitializeBase();
         }
         public void let_refresh(object sender, EventArgs e)
         {
@@ -101,7 +150,7 @@ namespace Better_Choices_1.DataSubmissions
         async void OnButtonClicked(object sender, EventArgs e)
         {
 
-            Habit Habit_ = this.GetHabit();
+            Recurring Habit_ = this.GetHabit();
             int job_id = await App.Database.SaveItemAsync(Habit_);
             this.save_Habit_Data(Habit_);
 
@@ -129,7 +178,18 @@ namespace Better_Choices_1.DataSubmissions
         {
             return true;
         }
-        public Habit GetHabit()
+        public Habit_Data GetHabitData()
+        {
+            double money_saved_2 = 0.0;
+            double.TryParse(moneySaved.Text, out money_saved_2);
+            double money_saved_1 = 0.0;
+            double.TryParse(moneySaved2.Text, out money_saved_1);
+
+            habit_data.date_run = child_form.get_start_date();
+            habit_data.money_saved = money_saved_1 - money_saved_2;
+            return habit_data;
+         }
+        public Recurring GetHabit()
         {
             double money_saved_2 = 0.0;
             double.TryParse(moneySaved.Text, out money_saved_2);
@@ -145,18 +205,45 @@ namespace Better_Choices_1.DataSubmissions
             money_saved_1, frequency_1, how_common_1,
             money_saved_2, frequency_2, how_common_2
             );
+            Recurring Habit_;
             DateTime date_ended = child_form.end_date();
-            var Habit_ = new Habit
+            if (habit_ != null)
             {
-                Name = nameEntry.Text,
-                date_started = child_form.get_start_date(),
-                money_saved = savings,
-                date_ended = child_form.get_end_date(),
-                how_common = child_form.how_common_1(),
-                frequency = child_form.frequency_1(),
 
-            };
-            Habit_.stash_to_use = App.Database.GetStashesID(stash_id);
+                habit_.Name = nameEntry.Text;
+                habit_.date_started = child_form.get_start_date();
+                habit_.money_saved = savings;
+                habit_.date_ended = child_form.get_end_date();
+                habit_.how_common = child_form.how_common_1();
+                habit_.frequency = child_form.frequency_1();
+                habit_.Type = child_form.type();
+                habit_.frequency_2 = child_form.frequency_2();
+                habit_.how_common_2 = child_form.how_common_2();
+                habit_.money_saved_1 = money_saved_1;
+                habit_.money_saved_2 = money_saved_2;
+
+                Habit_ = habit_;
+            }
+            else
+            {
+                Habit_ = new Recurring
+                {
+                    Name = nameEntry.Text,
+                    date_started = child_form.get_start_date(),
+                    money_saved = savings,
+                    date_ended = child_form.get_end_date(),
+                    how_common = child_form.how_common_1(),
+                    frequency = child_form.frequency_1(),
+                    Type = child_form.type(),
+                    frequency_2 = child_form.frequency_2(),
+                    how_common_2 = child_form.how_common_2(),
+                    money_saved_1 = money_saved_1,
+                    money_saved_2 = money_saved_2,
+
+                };
+                Habit_.stash_to_use = App.Database.GetStashesID(stash_id);
+
+            }
             return Habit_;
             
             
@@ -200,28 +287,9 @@ namespace Better_Choices_1.DataSubmissions
             }
 
         }
-        public async void save_Habit_Data(Habit Habit_)
+        public async void save_Habit_Data(Recurring Habit_)
         {
-            int i = 0;
-            DateTime occurence_date = Habit_.date_started;
-
-            while (occurence_date <= Habit_.date_ended)
-            {
-                var Habit_Data_ = new Habit_Data
-                {
-                    //Job = Habit_,
-                    Job_ID = Habit_.ID,
-                    date_run = occurence_date,
-                    money_saved = Habit_.money_saved,
-                    money_stored = Habit_.money_saved,
-                    stash_to_use = Habit_.stash_to_use
-
-                };
-                await App.Database.SaveItemAsync(Habit_Data_);
-                occurence_date = new utils_data.FrequencyTranslator().AddDate(Habit_, occurence_date);
-            }
-
-            //return Habit_Data_;
+            App.Database.save_habit_data(Habit_);
         }
         public void downstream_refresh()
         {
@@ -230,7 +298,6 @@ namespace Better_Choices_1.DataSubmissions
         public void refresh()
         {
             nameEntry.Text = null;
-
             moneySaved.Text = null;
             moneySaved2.Text = null;
             child_form.refresh();
@@ -253,8 +320,10 @@ namespace Better_Choices_1.DataSubmissions
 
         private void RadioButton_StateChanged(object sender, StateChangedEventArgs e)
         {
+            
             if (e.IsChecked.HasValue && e.IsChecked.Value)
             {
+                
                 if ((sender as SfRadioButton).Text == "One Time")
                 {
                     child_form = new One_Time();
@@ -271,6 +340,10 @@ namespace Better_Choices_1.DataSubmissions
                     Variable_Content.Content = child_form.Content;
                 }
                 this.set_helper();
+            if (habit_ != null)
+                {
+                    child_form.let_habit(habit_);
+                }
             }
         }
 

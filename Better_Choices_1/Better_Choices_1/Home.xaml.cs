@@ -141,7 +141,7 @@ namespace Better_Choices_1
             //this.refresh();
         }
 
-        Habit Selected_;
+        Recurring Selected_;
         DataSubmissions.Base_Data_Entry data_entry;
         protected override async void OnAppearing()
         {
@@ -203,7 +203,7 @@ namespace Better_Choices_1
         async void OnButtonClicked(object sender, EventArgs e)
         {
 
-            Habit Habit_ = data_entry.GetHabit();
+            Recurring Habit_ = data_entry.GetHabit();
             int job_id = await App.Database.SaveItemAsync(Habit_);
             data_entry.save_Habit_Data(Habit_);
             // habit_data_.Job_ID = job_id;

@@ -20,7 +20,7 @@ namespace Better_Choices_1.utils_data
             };
 
         }
-        public DateTime AddDate(Habit habit_, DateTime occurence)
+        public DateTime AddDate(Recurring habit_, DateTime occurence)
         {
             switch (habit_.frequency)
             {

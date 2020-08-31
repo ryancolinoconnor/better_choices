@@ -11,6 +11,7 @@ namespace Better_Choices_1.DataSubmissions
         Better_Choices_1.DataSubmissions.ControlTemplates.FrequencySelector freq_;
         Better_Choices_1.DataSubmissions.ControlTemplates.FrequencySelector freq_2;
         labeled_date end_date_picker;
+        Recurring habit_;
         public Bulk_Purchase(): base()
         {
             InitializeComponent();
@@ -23,6 +24,22 @@ namespace Better_Choices_1.DataSubmissions
             Common_.Children.Add(end_date_picker,1,0);
 
         }
+        public override void setup_around_habit(Recurring habit)
+        {
+            habit_ = habit;
+            end_date_picker.Date = habit_.date_ended;
+            freq_.let_data(habit_.how_common, habit_.frequency);
+            freq_2.let_data(habit_.how_common_2, habit_.frequency_2);
+
+
+
+        }
+
+        public override string type()
+        {
+            return "Bulk Purchase";
+        }
+
         public override void refresh() { freq_.refresh();freq_2.refresh(); }
         public override DateTime end_date() { return end_date_picker.Date; }
         public override DateTime get_end_date() { return end_date_picker.Date; }

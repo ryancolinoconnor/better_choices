@@ -30,7 +30,10 @@ namespace Better_Choices_1.TemplateForms
             base_stack.Orientation = Xamarin.Forms.StackOrientation.Horizontal;
             base_stack.HorizontalOptions = Xamarin.Forms.LayoutOptions.FillAndExpand;
         }
-        public DateTime Date { get { return date.Date; } }
+        public DateTime Date { 
+            get { return date.Date; }
+            set { date.Date = value; }
+        }
         public void let_text(string str_) { label.Text = str_; }
     }
 }

@@ -36,9 +36,8 @@
                 </Grid.ColumnDefinitions>
 
                 <Entry x:Name="moneySaved2"
-                       Grid.Row="0" Grid.Column="0"
-                       FontSize="4"
-                   Placeholder="I would have paid"
+                       Grid.Row="0" Grid.Column="0" 
+                       Placeholder="I'd have paid"
                    Keyboard="Numeric"
                        HorizontalOptions="FillAndExpand"/>
                 <Entry x:Name="moneySaved"
